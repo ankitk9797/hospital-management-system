@@ -30,4 +30,12 @@ public class UserServiceImpl implements UserService {
         return null;
     }
 
+    public UserDto getUserByUsername(String username){
+        Optional<User> user = userRepository.findUserByUsername(username);
+        if(user.isPresent()) {
+            return userMapper.toDto(user.get());
+        }
+        return null;
+    }
+
 }

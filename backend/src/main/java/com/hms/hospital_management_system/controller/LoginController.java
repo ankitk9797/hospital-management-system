@@ -44,7 +44,7 @@ public class LoginController {
     @Autowired
     private JwtUtil jwtUtil;
 
-    @PostMapping(path = "/create-admin")
+    @PostMapping(path = "/create-user")
     public ResponseEntity<?> createUser(@RequestBody UserDto dto) {
          UserDto userDto = userService.createUser(dto);
          if(userDto ==null) {
@@ -57,6 +57,10 @@ public class LoginController {
     public void createAuthenticationToken(@RequestBody UserDto authenticationRequest,
                                           HttpServletResponse response) throws IOException, JSONException {
 
+        UserDto userDto = userService.getUserByUsername(authenticationRequest.getUsername());
+        if(userDto == null || userDto.getRole() != authenticationRequest.getRole()){
+            throw new BadCredentialsException("Incorrect username, password or role");
+        }
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                     authenticationRequest.getUsername(),authenticationRequest.getPassword()

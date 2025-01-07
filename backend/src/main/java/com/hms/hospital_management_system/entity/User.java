@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
-@Table(name = "user_admin")
+@Table(name = "users")
 @Data
 public class User {
 
@@ -16,5 +16,7 @@ public class User {
     private String username;
 
     private String password;
+
+    private Role role;
 
 }
