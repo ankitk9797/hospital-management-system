@@ -2,6 +2,7 @@ package com.hms.hospital_management_system.controller;
 
 import com.hms.hospital_management_system.dto.UserDto;
 import com.hms.hospital_management_system.entity.User;
+import com.hms.hospital_management_system.enums.Role;
 import com.hms.hospital_management_system.repository.UserRepository;
 import com.hms.hospital_management_system.services.UserService;
 import com.hms.hospital_management_system.services.jwt.UserDetailsServiceImpl;
@@ -16,9 +17,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 
@@ -53,12 +52,21 @@ public class LoginController {
          return ResponseEntity.status(HttpStatus.CREATED).body(userDto);
     }
 
+    @GetMapping(path = "/get-user/{username}/{role}")
+    public ResponseEntity<?> getUserByUsernameAndRole(@PathVariable String username,@PathVariable Role role) {
+        UserDto userDto = userService.getUserByUsernameAndRole(username, role);
+        if(userDto ==null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(userDto);
+    }
+
     @PostMapping({"/login"})
     public void createAuthenticationToken(@RequestBody UserDto authenticationRequest,
                                           HttpServletResponse response) throws IOException, JSONException {
 
-        UserDto userDto = userService.getUserByUsername(authenticationRequest.getUsername());
-        if(userDto == null || userDto.getRole() != authenticationRequest.getRole()){
+        UserDto userDto = userService.getUserByUsernameAndRole(authenticationRequest.getUsername(), authenticationRequest.getRole());
+        if(userDto == null){
             throw new BadCredentialsException("Incorrect username, password or role");
         }
         try {

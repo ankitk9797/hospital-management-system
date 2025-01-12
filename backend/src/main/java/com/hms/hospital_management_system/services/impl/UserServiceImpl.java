@@ -2,6 +2,7 @@ package com.hms.hospital_management_system.services.impl;
 
 import com.hms.hospital_management_system.dto.UserDto;
 import com.hms.hospital_management_system.entity.User;
+import com.hms.hospital_management_system.enums.Role;
 import com.hms.hospital_management_system.mapper.UserMapper;
 import com.hms.hospital_management_system.repository.UserRepository;
 import com.hms.hospital_management_system.services.UserService;
@@ -32,6 +33,14 @@ public class UserServiceImpl implements UserService {
 
     public UserDto getUserByUsername(String username){
         Optional<User> user = userRepository.findUserByUsername(username);
+        if(user.isPresent()) {
+            return userMapper.toDto(user.get());
+        }
+        return null;
+    }
+
+    public UserDto getUserByUsernameAndRole(String username, Role role){
+        Optional<User> user = userRepository.findUserByUsernameAndRole(username, role);
         if(user.isPresent()) {
             return userMapper.toDto(user.get());
         }
