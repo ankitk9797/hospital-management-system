@@ -7,7 +7,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.management.AttributeNotFoundException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping(path = "/patient")
@@ -47,12 +50,14 @@ public class PatientController {
     }
 
     @DeleteMapping(path = "/delete/{id}")
-    public ResponseEntity<?> deletePatient(@PathVariable long id) {
+    public ResponseEntity<Map<String,Boolean>> deletePatient(@PathVariable long id) throws AttributeNotFoundException {
         boolean isDeleted = patientService.deletePatient(id);
 
-        if(isDeleted == false){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Patient not found with id: " + id);
+        if(!isDeleted) {
+            throw new AttributeNotFoundException("Appointment not found with id: "+id);
         }
-        return ResponseEntity.status(HttpStatus.OK).body("Patient successfully deleted");
+        Map<String, Boolean> response = new HashMap<>();
+        response.put("deleted", Boolean.TRUE);
+        return ResponseEntity.ok(response);
     }
 }

@@ -84,6 +84,7 @@ public class LoginController {
         response.getWriter().write(new JSONObject()
                 .put("id", user.getId())
                 .put("token", jwt)
+                        .put("role", authenticationRequest.getRole())
                 .toString()
         );
 
