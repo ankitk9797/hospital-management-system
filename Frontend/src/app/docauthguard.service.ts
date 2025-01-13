@@ -8,16 +8,17 @@ import {
   RouterStateSnapshot
 } from "@angular/router";
 import {DocauthService} from "./doclogin/docauth.service";
+import {UserStorageService} from "./storage/user-stoarge.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class DocauthguardService implements CanActivate{
 
-  constructor(private docauthService:DocauthService,private router: Router) { }
+  constructor(private router: Router) { }
 
   canActivate(){
-    if(this.docauthService.isUserLoggedIn()){
+    if(UserStorageService.isDoctorLoggedIn()){
       return true;
     } else {
       this.router.navigate(['doclogin']);

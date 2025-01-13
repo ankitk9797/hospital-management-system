@@ -8,6 +8,7 @@ import {
   RouterStateSnapshot
 } from "@angular/router";
 import {AdminauthService} from "./adlogin/adminauth.service";
+import {UserStorageService} from "./storage/user-stoarge.service";
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +19,7 @@ export class AdminauthguardService implements CanActivate{
   }
 
   canActivate() {
-    if(this.adminAuthService.isUserLoggedIn()){
+    if(UserStorageService.isAdminLoggedIn()){
       return true;
     } else {
       this.router.navigate(['adlogin']);

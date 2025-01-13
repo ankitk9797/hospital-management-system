@@ -9,17 +9,17 @@ import {Appointment} from "./appointment";
 export class AppointmentService {
 
   constructor(private httpClient:HttpClient) { }
-  private baseUrl = "http://localhost:8080/api/v2";
+  private baseUrl = "http://localhost:8080/appointment";
 
   getAllApointments():Observable<Appointment[]>{
-    return this.httpClient.get<Appointment[]>(`${this.baseUrl}`);
+    return this.httpClient.get<Appointment[]>(`${this.baseUrl}/allAppointments`);
   }
 
   createAppointment(appointment:Appointment): Observable<Appointment>{
-    return this.httpClient.post<Appointment>(`${this.baseUrl}/insert`,appointment);
+    return this.httpClient.post<Appointment>(`${this.baseUrl}/create`,appointment);
   }
 
   deleteAppointment(id:number):Observable<object>{
-    return this.httpClient.delete(`${this.baseUrl}/appointments/${id}`)
+    return this.httpClient.delete(`${this.baseUrl}/delete/${id}`)
   }
 }

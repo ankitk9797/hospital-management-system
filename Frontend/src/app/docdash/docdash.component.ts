@@ -3,6 +3,7 @@ import {Patient} from "../patient/patient";
 import {PatientService} from "../patient/patient.service";
 import {Router} from "@angular/router";
 import {DocauthService} from "../doclogin/docauth.service";
+import {UserStorageService} from "../storage/user-stoarge.service";
 
 @Component({
   selector: 'app-docdash',
@@ -40,7 +41,7 @@ export class DocdashComponent implements OnInit{
   }
 
   logout(){
-    this.docAuthService.logout();
+    UserStorageService.signOut();
     this.router.navigate(['home']);
   }
 

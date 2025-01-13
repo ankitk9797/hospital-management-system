@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Patient } from '../patient/patient';
 import { PatientService } from '../patient/patient.service';
 import {AdminauthService} from "../adlogin/adminauth.service";
+import {UserStorageService} from "../storage/user-stoarge.service";
 
 @Component({
   selector: 'app-admindash',
@@ -46,7 +47,7 @@ export class AdmindashComponent implements OnInit {
   }
 
   logout(){
-    this.adminAuthService.logout();
+    UserStorageService.signOut();
     this.router.navigate(['home']);
   }
 
